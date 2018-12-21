@@ -1,4 +1,4 @@
-Freedom
+Freedom.......sifive china
 =======
 
 This repository contains the RTL created by SiFive for its Freedom E300 and U500
