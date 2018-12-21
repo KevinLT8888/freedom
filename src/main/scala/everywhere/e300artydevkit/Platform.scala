@@ -19,7 +19,7 @@ import sifive.blocks.devices.spi._
 import sifive.blocks.devices.uart._
 import sifive.blocks.devices.i2c._
 import sifive.blocks.devices.pinctrl._
-
+import sfc.blocks.timer._
 //-------------------------------------------------------------------------
 // PinGen
 //-------------------------------------------------------------------------
@@ -175,3 +175,7 @@ class E300ArtyDevKitPlatform(implicit val p: Parameters) extends Module {
   // and thus there is no .fromPort method.
   io.pins.aon <> sys.aon.pins
 }
+class WithTimer extends WithSFCTIMER("Timers") //the name should be same as the verilog IP top module name
+ class WithSFCTIMER(config: String) extends Config((site, here, up) => {
+  case TIMERKey => Some(TIMERParams(config = config, raddress = 0xc0000000L,lenth = 0x8000L-1L))
+})

@@ -22,6 +22,7 @@ class DefaultFreedomEConfig extends Config (
   new WithNExtTopInterrupts(0)   ++
   new WithJtagDTM                ++
   new TinyConfig
+  ++ new WithTimer
 )
 
 // Freedom E300 Arty Dev Kit Peripherals

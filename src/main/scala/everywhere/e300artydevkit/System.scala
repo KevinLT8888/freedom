@@ -16,12 +16,13 @@ import sifive.blocks.devices.pwm._
 import sifive.blocks.devices.spi._
 import sifive.blocks.devices.uart._
 import sifive.blocks.devices.i2c._
-
+import sfc.blocks.timer._
 //-------------------------------------------------------------------------
 // E300ArtyDevKitSystem
 //-------------------------------------------------------------------------
 
 class E300ArtyDevKitSystem(implicit p: Parameters) extends RocketSubsystem
+    with HasPeripheryTIMER
     with HasPeripheryMaskROMSlave
     with HasPeripheryDebug
     with HasPeripheryMockAON
