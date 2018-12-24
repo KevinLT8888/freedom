@@ -31,7 +31,7 @@ class AHBSlaveRam(params: AHBSlaveRamParams )(implicit p: Parameters) extends La
           supportsRead  = TransferSizes(1,4))),
         beatBytes = 4)))
 
-  val cfg_tl_node = cfg_ahb_node := LazyModule(new TLToAPB).node
+  val cfg_tl_node = cfg_ahb_node := LazyModule(new TLToAHB).node
 
   val int_node = IntSourceNode(IntSourcePortSimple(num = 1, resources = dtsdevice.int))
 
@@ -44,20 +44,28 @@ class AHBSlaveRam(params: AHBSlaveRamParams )(implicit p: Parameters) extends La
     u_ahb_ram.io.hresetn := reset
     u_ram_model.io.clka := clock
 
+    //link AHB and Ram
+    u_ahb_ram.io.ram_dout := u_ram_model.io.douta
 
-    val (cfg, _) = cfg_ahb_node.in(0)
-    u_timer.io.PSEL         := cfg.psel
-    u_timer.io.PENABLE      := cfg.penable
-    u_timer.io.PWRITE       := cfg.pwrite
-    u_timer.io.PADDR        := cfg.paddr
-    u_timer.io.PWDATA       := cfg.pwdata
-    cfg.prdata              := u_timer.io.PRDATA
-    cfg.pready              := Bool(true)
-    cfg.pslverr             := Bool(false)
+    u_ram_model.io.ena    := u_ahb_ram.io.ram_csn
+    u_ram_model.io.wea    := u_ahb_ram.io.ram_wrn
+    u_ram_model.io.addra  := u_ahb_ram.io.ram_addr
+    u_ram_model.io.dina   := u_ahb_ram.io.ram_din
 
-    val (io_int, _) = int_node.out(0)
-    //u_timer.io.TIMCLKEN1   := Bool(true)
-    io_int(0)   := u_timer.io.TIMINTC
+
+    val (ahb, _) = cfg_ahb_node.in(0)
+    u_ahb_ram.io.haddr    := ahb.haddr
+    u_ahb_ram.io.htrans   := ahb.htrans
+    u_ahb_ram.io.hwrite   := ahb.hwrite
+    u_ahb_ram.io.hwdata   := ahb.hwdata
+    u_ahb_ram.io.hsize    := ahb.hsize
+    u_ahb_ram.io.hsel     := ahb.hsel
+    u_ahb_ram.io.hready   := ahb.hready
+
+    ahb.hrdata            := u_ahb_ram.io.hrdata
+    ahb.hreadyout         := u_ahb_ram.io.hreadyout
+    ahb.hresp             := u_ahb_ram.io.hresp
+
 
   }
 }

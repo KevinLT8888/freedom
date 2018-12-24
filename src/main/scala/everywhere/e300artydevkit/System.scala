@@ -23,6 +23,7 @@ import sfc.blocks.timer._
 
 class E300ArtyDevKitSystem(implicit p: Parameters) extends RocketSubsystem
     with HasPeripheryTIMER
+    with HasPeripheryAHBSlaveRam
     with HasPeripheryMaskROMSlave
     with HasPeripheryDebug
     with HasPeripheryMockAON

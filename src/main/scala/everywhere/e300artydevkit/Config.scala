@@ -23,6 +23,7 @@ class DefaultFreedomEConfig extends Config (
   new WithJtagDTM                ++
   new TinyConfig
   ++ new WithTimer
+  ++ new WithAHBSlaveRam("AHBSlaveRam")
 )
 
 // Freedom E300 Arty Dev Kit Peripherals
