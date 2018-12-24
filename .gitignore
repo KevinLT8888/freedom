@@ -3,4 +3,3 @@
 # sbt directories
 /target
 /project/target
-/builds
