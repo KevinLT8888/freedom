@@ -26,7 +26,7 @@ class AHBSlaveRam(params: AHBSlaveRamParams )(implicit p: Parameters) extends La
         slaves = Seq(AHBSlaveParameters(
           address       = Seq(AddressSet(params.raddress, params.lenth)),//0x8000L-1L
           resources     = dtsdevice.reg("control"),
-          executable    = false,
+          executable    = true,
           supportsWrite = TransferSizes(1,4),
           supportsRead  = TransferSizes(1,4))),
         beatBytes = 4)))
@@ -41,14 +41,14 @@ class AHBSlaveRam(params: AHBSlaveRamParams )(implicit p: Parameters) extends La
     val u_ahb_ram = Module(new ahb_ram("ahb_ram"))
     val u_ram_model = Module(new fpga_xilinx_sp_1024x32m8("fpga_xilinx_sp_1024x32m8"))
     u_ahb_ram.io.hclk := clock
-    u_ahb_ram.io.hresetn := reset
+    u_ahb_ram.io.hresetn := ~reset
     u_ram_model.io.clka := clock
 
     //link AHB and Ram
     u_ahb_ram.io.ram_dout := u_ram_model.io.douta
 
-    u_ram_model.io.ena    := u_ahb_ram.io.ram_csn
-    u_ram_model.io.wea    := u_ahb_ram.io.ram_wrn
+    u_ram_model.io.ena    := ~u_ahb_ram.io.ram_csn
+    u_ram_model.io.wea    := ~u_ahb_ram.io.ram_wrn
     u_ram_model.io.addra  := u_ahb_ram.io.ram_addr
     u_ram_model.io.dina   := u_ahb_ram.io.ram_din
 
