@@ -2,14 +2,14 @@ package sfc.blocks.ip.ahbslaveram
 
 import Chisel._
 
-class ahb_ram (blackboxName: String) extends BlackBox{
+class ahb_ram (blackboxName: String,ADDR_WIDTH: Int,MEM_DEPTH : Int) extends BlackBox{
   override def desiredName = blackboxName
   val io = new Bundle() {
     val hclk = Clock(INPUT)
     val hresetn = Bool(INPUT)
 
     //input ahb slv int
-    val haddr = Bits(INPUT,12)
+    val haddr = Bits(INPUT,ADDR_WIDTH)//memory address wires
     val htrans = Bits(INPUT,2)
     val hwrite = Bool(INPUT)
     val hwdata = Bits(INPUT,32)
@@ -25,7 +25,7 @@ class ahb_ram (blackboxName: String) extends BlackBox{
     //output mem inf
     val ram_csn = Bool(OUTPUT)
     val ram_wrn = Bits(OUTPUT,4)
-    val ram_addr = Bits(OUTPUT,10)
+    val ram_addr = Bits(OUTPUT,MEM_DEPTH)
     val ram_din = Bits(OUTPUT,32)
 
     //input memory inf

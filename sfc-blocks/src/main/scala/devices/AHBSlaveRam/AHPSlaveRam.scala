@@ -33,13 +33,13 @@ class AHBSlaveRam(params: AHBSlaveRamParams )(implicit p: Parameters) extends La
 
   val cfg_tl_node = cfg_ahb_node := LazyModule(new TLToAHB).node
 
-  val int_node = IntSourceNode(IntSourcePortSimple(num = 1, resources = dtsdevice.int))
 
 
   lazy val module = new LazyModuleImp(this){
 
-    val u_ahb_ram = Module(new ahb_ram("ahb_ram"))
-    val u_ram_model = Module(new fpga_xilinx_sp_1024x32m8("fpga_xilinx_sp_1024x32m8"))
+    val u_ahb_ram = Module(new ahb_ram("ahb_ram",17,15))
+    //val u_ram_model = Module(new fpga_xilinx_sp_1024x32m8("fpga_xilinx_sp_1024x32m8"))
+    val u_ram_model = Module(new fpga_xilinx_sp_32768x32m8("fpga_xilinx_sp_32768x32m8"))
     u_ahb_ram.io.hclk := clock
     u_ahb_ram.io.hresetn := ~reset
     u_ram_model.io.clka := clock

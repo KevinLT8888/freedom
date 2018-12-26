@@ -180,5 +180,6 @@ class WithTimer extends WithSFCTIMER("Timers") //the name should be same as the 
   case TIMERKey => Some(TIMERParams(config = config, raddress = 0xc0000000L,lenth = 0x8000L-1L))
 })
 class WithAHBSlaveRam(config:String) extends Config((site,here,up) => {
-  case AHBSlaveRamKey => Some(AHBSlaveRamParams(config = config, raddress = 0xd0000000L,lenth = 0x1000L-1L))
+  //case AHBSlaveRamKey => Some(AHBSlaveRamParams(config = config, raddress = 0xd0000000L,lenth = 0x1000L-1L))
+  case AHBSlaveRamKey => Some(AHBSlaveRamParams(config = config, raddress = 0xd0000000L,lenth = 0x20000L-1L))
 })
