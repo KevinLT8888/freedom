@@ -177,7 +177,7 @@ class E300ArtyDevKitPlatform(implicit val p: Parameters) extends Module {
 }
 class WithTimer extends WithSFCTIMER("Timers") //the name should be same as the verilog IP top module name
  class WithSFCTIMER(config: String) extends Config((site, here, up) => {
-  case TIMERKey => Some(TIMERParams(config = config, raddress = 0xc0000000L,lenth = 0x8000L-1L))
+  case TIMERKey => Some(TIMERParams(config = config, raddress = 0xc0000000L,lenth = 0x8000L-1L, enableNum = 1))
 })
 class WithAHBSlaveRam(config:String) extends Config((site,here,up) => {
   //case AHBSlaveRamKey => Some(AHBSlaveRamParams(config = config, raddress = 0xd0000000L,lenth = 0x1000L-1L))

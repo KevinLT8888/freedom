@@ -11,7 +11,8 @@ import sfc.blocks.ip.timer._
 case class TIMERParams(
   config: String,
   raddress: BigInt,
-  lenth: BigInt
+  lenth: BigInt,
+  enableNum: Int
 )
 
 class TIMER(params: TIMERParams )(implicit p: Parameters) extends LazyModule {
@@ -48,8 +49,14 @@ class TIMER(params: TIMERParams )(implicit p: Parameters) extends LazyModule {
     u_timer.io.PSEL         := cfg.psel
     u_timer.io.PENABLE      := cfg.penable
     u_timer.io.PWRITE       := cfg.pwrite
-    u_timer.io.PADDR        := cfg.paddr
+    u_timer.io.PADDR        := cfg.paddr(11,2)
     u_timer.io.PWDATA       := cfg.pwdata
+    u_timer.io.TIMCLKEN1    := Bool(true)
+
+    u_timer.io.TIMCLKEN2    := {if(params.enableNum>1) Bool(true)
+                                else Bool(false)}
+
+
     cfg.prdata              := u_timer.io.PRDATA
     cfg.pready              := Bool(true)
     cfg.pslverr             := Bool(false)
