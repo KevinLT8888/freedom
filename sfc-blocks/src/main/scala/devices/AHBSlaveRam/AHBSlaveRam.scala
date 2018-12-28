@@ -1,4 +1,4 @@
-package sfc.blocks.timer
+package sfc.blocks.AHBRam
 import Chisel._
 import freechips.rocketchip.config._
 import freechips.rocketchip.diplomacy._

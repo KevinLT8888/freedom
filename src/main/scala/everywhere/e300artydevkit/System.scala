@@ -17,6 +17,7 @@ import sifive.blocks.devices.spi._
 import sifive.blocks.devices.uart._
 import sifive.blocks.devices.i2c._
 import sfc.blocks.timer._
+import sfc.blocks.AHBRam._
 //-------------------------------------------------------------------------
 // E300ArtyDevKitSystem
 //-------------------------------------------------------------------------

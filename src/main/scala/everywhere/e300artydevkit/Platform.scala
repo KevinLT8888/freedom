@@ -19,6 +19,7 @@ import sifive.blocks.devices.spi._
 import sifive.blocks.devices.uart._
 import sifive.blocks.devices.i2c._
 import sifive.blocks.devices.pinctrl._
+import sfc.blocks.AHBRam._
 import sfc.blocks.timer._
 //-------------------------------------------------------------------------
 // PinGen
