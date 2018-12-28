@@ -20,11 +20,11 @@ class AHBSlaveRam(params: AHBSlaveRamParams )(implicit p: Parameters) extends La
 
   val dtsdevice = new SimpleDevice("AHBSlaveRam",Seq("AHBSlaveRam_2"))
 
-  val cfg_ahb_node = AHBSlaveNode(  //instantiate a node of APBSlave
+  val cfg_ahb_node = AHBSlaveNode(  //instantiate a node of AHBSlave
     Seq(
       AHBSlavePortParameters(
         slaves = Seq(AHBSlaveParameters(
-          address       = Seq(AddressSet(params.raddress, params.lenth)),//0x8000L-1L
+          address       = Seq(AddressSet(params.raddress, params.lenth)),
           resources     = dtsdevice.reg("control"),
           executable    = true,
           supportsWrite = TransferSizes(1,4),
