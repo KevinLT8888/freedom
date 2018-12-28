@@ -17,14 +17,14 @@ class apb_uart (blackboxName: String) extends BlackBox {
     val PWRITE = Bool(INPUT)      //APB write
     val PWDATA = Bits(INPUT,16)   //APB write data
 
-    val nUARTCTS = Bool(INPUT)
-    val nUARTDCD = Bool(INPUT)
-    val nUARTDSR = Bool(INPUT)
-    val nUARTRI = Bool(INPUT)
-    val UARTRXD = Bool(INPUT)
-    val SIRIN = Bool(INPUT)
-    val UARTTXDMACLR = Bool(INPUT)
-    val UARTRXDMACLR = Bool(INPUT)
+    val nUARTCTS = Bool(INPUT)    //Modem CTS
+    val nUARTDCD = Bool(INPUT)    //Modem DCD
+    val nUARTDSR = Bool(INPUT)    //Modem DSR
+    val nUARTRI = Bool(INPUT)     //Modem RI
+    val UARTRXD = Bool(INPUT)     //UART Receive input
+    val SIRIN = Bool(INPUT)       //SiR receive input
+    val UARTTXDMACLR = Bool(INPUT)//Tranmit DMA Clear
+    val UARTRXDMACLR = Bool(INPUT)//Receive DMA Clear
 
 
 
