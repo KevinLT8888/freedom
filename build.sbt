@@ -30,6 +30,7 @@ lazy val nvdlaBlocks = (project in file("nvidia-dla-blocks")).
   settings(commonSettings: _*)
 lazy val sfcBlocks = (project in file("sfc-blocks")).
   dependsOn(rocketChip).
+  dependsOn(sifiveBlocks).
   settings(commonSettings: _*)
 lazy val fpgaShells = (project in file("fpga-shells")).
   dependsOn(rocketChip, sifiveBlocks).

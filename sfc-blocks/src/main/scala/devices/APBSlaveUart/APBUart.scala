@@ -4,6 +4,8 @@ import freechips.rocketchip.config._
 import freechips.rocketchip.diplomacy._
 import freechips.rocketchip.amba.apb._
 import freechips.rocketchip.tilelink._
+import freechips.rocketchip.config.Parameters
+import freechips.rocketchip.regmapper.{IORegisterRouter, RegisterRouterParams}
 import sfc.blocks.ip.apbuart._
 import sifive.blocks.devices.uart._
 case class APBSlaveUartParams(
@@ -31,6 +33,9 @@ class APBUART(params:APBSlaveUartParams)(implicit p: Parameters) extends LazyMod
 
   val cfg_tl_node = cfg_apb_node := LazyModule(new TLToAPB).node
 
+  //build a bundle brigde to outside to chip pad
+  val ioNode = BundleBridgeSource( () => (new UARTPortIO).cloneType)
+  val port = InModuleBody { ioNode.bundle }
 
   override lazy val module = new LazyModuleImp(this){
 
@@ -60,9 +65,12 @@ class APBUART(params:APBSlaveUartParams)(implicit p: Parameters) extends LazyMod
     u_apb_slave_uart.io.PWDATA := cfg.pwdata
 
 
+    u_apb_slave_uart.io.UARTRXD := port.rxd
+    port.txd := u_apb_slave_uart.io.UARTTXD
 
   }
 
+
+
 }
 
-object APBUART
