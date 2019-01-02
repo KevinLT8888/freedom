@@ -21,6 +21,7 @@ import sifive.blocks.devices.i2c._
 import sifive.blocks.devices.pinctrl._
 import sfc.blocks.AHBRam._
 import sfc.blocks.timer._
+import sfc.blocks.APBSlaveUart._
 //-------------------------------------------------------------------------
 // PinGen
 //-------------------------------------------------------------------------
@@ -41,6 +42,7 @@ class E300ArtyDevKitPlatformIO(implicit val p: Parameters) extends Bundle {
     val jtag = new JTAGPins(() => PinGen(), false)
     val gpio = new GPIOPins(() => PinGen(), p(PeripheryGPIOKey)(0))
     val qspi = new SPIPins(() => PinGen(), p(PeripherySPIFlashKey)(0))
+    //val apb_uart = new UARTPins(()=>PinGen())
     val aon = new MockAONWrapperPins()
   }
   val jtag_reset = Bool(INPUT)
@@ -72,17 +74,19 @@ class E300ArtyDevKitPlatform(implicit val p: Parameters) extends Module {
   // Pin Mux for UART, SPI, PWM
   // First convert the System outputs into "IOF" using the respective *GPIOPort
   // converters.
-
+  val sys_apb_uart = sys.apbuart
   val sys_uart = sys.uart
   val sys_pwm  = sys.pwm
   val sys_spi  = sys.spi
   val sys_i2c  = sys.i2c
 
+  val apbUart_pins = p(PeripheryAPBSlaveUartKey).map {c => Wire(new UARTPins(()=> PinGen()))}
   val uart_pins = p(PeripheryUARTKey).map { c => Wire(new UARTPins(() => PinGen()))}
   val pwm_pins  = p(PeripheryPWMKey).map  { c => Wire(new PWMPins(() => PinGen(), c))}
   val spi_pins  = p(PeripherySPIKey).map  { c => Wire(new SPIPins(() => PinGen(), c))}
   val i2c_pins  = p(PeripheryI2CKey).map  { c => Wire(new I2CPins(() => PinGen()))}
 
+  (apbUart_pins zip sys_apb_uart)map {case (p,r)=> UARTPinsFromPort(p, r, clock = clock, reset = reset, syncStages = 0)}
   (uart_pins zip  sys_uart) map {case (p, r) => UARTPinsFromPort(p, r, clock = clock, reset = reset, syncStages = 0)}
   (pwm_pins  zip  sys_pwm)  map {case (p, r) => PWMPinsFromPort(p, r) }
   (spi_pins  zip  sys_spi)  map {case (p, r) => SPIPinsFromPort(p, r, clock = clock, reset = reset, syncStages = 0)}
@@ -136,6 +140,10 @@ class E300ArtyDevKitPlatform(implicit val p: Parameters) extends Module {
   // UART1
   BasePinToIOF(uart_pins(1).rxd, iof_0(24))
   BasePinToIOF(uart_pins(1).txd, iof_0(25))
+
+  //APB_UART
+  BasePinToIOF(apbUart_pins(0).rxd, iof_0(18))
+  BasePinToIOF(apbUart_pins(0).txd, iof_0(23))
 
   //PWM
   BasePinToIOF(pwm_pins(0).pwm(0), iof_1(0) )

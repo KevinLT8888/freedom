@@ -18,6 +18,7 @@ import sifive.blocks.devices.uart._
 import sifive.blocks.devices.i2c._
 import sfc.blocks.timer._
 import sfc.blocks.AHBRam._
+import sfc.blocks.APBSlaveUart._
 //-------------------------------------------------------------------------
 // E300ArtyDevKitSystem
 //-------------------------------------------------------------------------
@@ -28,6 +29,7 @@ class E300ArtyDevKitSystem(implicit p: Parameters) extends RocketSubsystem
     with HasPeripheryMaskROMSlave
     with HasPeripheryDebug
     with HasPeripheryMockAON
+    with HasPeripheryAPBSlaveUart
     with HasPeripheryUART
     with HasPeripherySPIFlash
     with HasPeripherySPI
@@ -41,6 +43,7 @@ class E300ArtyDevKitSystemModule[+L <: E300ArtyDevKitSystem](_outer: L)
   extends RocketSubsystemModuleImp(_outer)
     with HasPeripheryDebugModuleImp
     with HasPeripheryUARTModuleImp
+    with HasPeripheryAPBSlaveUartImp
     with HasPeripherySPIModuleImp
     with HasPeripheryGPIOModuleImp
     with HasPeripherySPIFlashModuleImp

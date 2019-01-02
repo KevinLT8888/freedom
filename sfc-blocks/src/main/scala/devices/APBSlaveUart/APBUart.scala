@@ -1,4 +1,4 @@
-package src.main.scala.devices.APBSlaveUart
+package sfc.blocks.APBSlaveUart
 import Chisel._
 import freechips.rocketchip.config._
 import freechips.rocketchip.diplomacy._
@@ -16,7 +16,7 @@ case class APBSlaveUartParams(
 
 class APBUART(params:APBSlaveUartParams)(implicit p: Parameters) extends LazyModule {
 
-  val blackboxName = params.config
+  val blackboxName = "Uart"
 
   val dtsdevice = new SimpleDevice("APBUART",Seq("sfc,apbUart"))
 

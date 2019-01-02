@@ -15,7 +15,7 @@ import sifive.blocks.devices.pwm._
 import sifive.blocks.devices.spi._
 import sifive.blocks.devices.uart._
 import sifive.blocks.devices.i2c._
-
+import sfc.blocks.APBSlaveUart._
 // Default FreedomEConfig
 class DefaultFreedomEConfig extends Config (
   new WithNBreakpoints(2)        ++
@@ -51,6 +51,9 @@ class E300DevKitPeripherals extends Config((site, here, up) => {
     MockAONParams(address = 0x10000000)
   case PeripheryMaskROMKey => List(
     MaskROMParams(address = 0x10000, name = "BootROM"))
+  case PeripheryAPBSlaveUartKey => List(
+    APBSlaveUartParams(config = "APBUart", raddress = 0x100e3000L,lenth = 0x1000L-1L)
+  )
 })
 
 // Freedom E300 Arty Dev Kit Peripherals

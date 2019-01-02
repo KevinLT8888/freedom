@@ -10,10 +10,10 @@ import freechips.rocketchip.diplomacy.{LazyModule}
 
 import sifive.blocks.devices.gpio._
 import sifive.blocks.devices.spi._
-
+import chisel3.experimental.{RawModule, Analog, withClockAndReset}
 import sifive.fpgashells.shell.xilinx.artyshell.{ArtyShell}
 import sifive.fpgashells.ip.xilinx.{IBUFG, IOBUF, PULLUP, PowerOnResetFPGAOnly}
-
+import sifive.fpgashells.ip.xilinx.{IBUFG, IOBUF, PULLUP, mmcm, reset_sys, PowerOnResetFPGAOnly}
 //-------------------------------------------------------------------------
 // E300ArtyDevKitFPGAChip
 //-------------------------------------------------------------------------
@@ -105,13 +105,37 @@ class E300ArtyDevKitFPGAChip(implicit override val p: Parameters) extends ArtySh
 
     IOBUF(uart_rxd_out, dut.io.pins.gpio.pins(17))
 
+
+    //link an APB uart device ouside
+
+    //val iobuf_rxd = Module(new IOBUF())
+
+    //iobuf_rxd.io.T := Bool(true)
+    //dut.sys.apbuart(0).rxd := iobuf_rxd.io.O
+    //iobuf_rxd.io.I := Bool(false)
+    //attach(iobuf_rxd.io.IO,apb_uart_rxd_out)
+
+    //val iobuf_txd = Module(new IOBUF())
+
+    //iobuf_txd.io.T := Bool(false)
+    //iobuf_txd.io.I := dut.sys.apbuart(0).txd
+    //iobuf_txd.io.O := Bool(false)
+    //attach(apb_uart_txd_in,iobuf_txd.io.IO)
+
+    IOBUF(apb_uart_rxd_out, dut.io.pins.gpio.pins(18))
+    IOBUF(apb_uart_txd_in,  dut.io.pins.gpio.pins(23))
+    //val iobuf_apb_uart_txd = Module(new IOBUF())
+    //iobuf_apb_uart_txd.io.I := dut.io.pins.gpio.pins(18).o.oval
+    //iobuf_apb_uart_txd.io.T := ~dut.io.pins.gpio.pins(18).o.oe
+    //attach(iobuf_apb_uart_txd.io.IO, apb_uart_txd_in)
+
     // Shield header row 0: PD2-PD7
-    IOBUF(ck_io(2),  dut.io.pins.gpio.pins(18))
+    //IOBUF(ck_io(2),  dut.io.pins.gpio.pins(18))
     IOBUF(ck_io(3),  dut.io.pins.gpio.pins(19)) // PWM1(1)
     IOBUF(ck_io(4),  dut.io.pins.gpio.pins(20)) // PWM1(0)
     IOBUF(ck_io(5),  dut.io.pins.gpio.pins(21)) // PWM1(2)
     IOBUF(ck_io(6),  dut.io.pins.gpio.pins(22)) // PWM1(3)
-    IOBUF(ck_io(7),  dut.io.pins.gpio.pins(23))
+    //IOBUF(ck_io(7),  dut.io.pins.gpio.pins(23))
 
     // Header row 1: PB0-PB5
     IOBUF(ck_io(8),  dut.io.pins.gpio.pins(0))  // PWM0(0)

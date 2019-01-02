@@ -1,4 +1,4 @@
-package src.main.scala.devices.APBSlaveUart
+package sfc.blocks.APBSlaveUart
 
 import freechips.rocketchip.config._
 import freechips.rocketchip.diplomacy._
