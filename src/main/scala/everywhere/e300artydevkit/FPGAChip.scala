@@ -36,7 +36,8 @@ class E300ArtyDevKitFPGAChip(implicit override val p: Parameters) extends ArtySh
   //-----------------------------------------------------------------------
   // DUT
   //-----------------------------------------------------------------------
-
+  val apb_uart_txd_in = IO(Analog(1.W))
+  val apb_uart_rxd_out = IO(Analog(1.W))
   withClockAndReset(clock_32MHz, ck_rst) {
     val dut = Module(new E300ArtyDevKitPlatform)
 
@@ -108,26 +109,12 @@ class E300ArtyDevKitFPGAChip(implicit override val p: Parameters) extends ArtySh
 
     //link an APB uart device ouside
 
-    //val iobuf_rxd = Module(new IOBUF())
+    //IOBUF(apb_uart_rxd_out, dut.sys_apb_uart(0).txd)
+    //dut.sys_apb_uart(0).rxd := IOBUF(apb_uart_txd_in)
 
-    //iobuf_rxd.io.T := Bool(true)
-    //dut.sys.apbuart(0).rxd := iobuf_rxd.io.O
-    //iobuf_rxd.io.I := Bool(false)
-    //attach(iobuf_rxd.io.IO,apb_uart_rxd_out)
+    IOBUF(apb_uart_rxd_out, dut.io.pins.gpio.pins(23))
+    IOBUF(apb_uart_txd_in,  dut.io.pins.gpio.pins(18))
 
-    //val iobuf_txd = Module(new IOBUF())
-
-    //iobuf_txd.io.T := Bool(false)
-    //iobuf_txd.io.I := dut.sys.apbuart(0).txd
-    //iobuf_txd.io.O := Bool(false)
-    //attach(apb_uart_txd_in,iobuf_txd.io.IO)
-
-    IOBUF(apb_uart_rxd_out, dut.io.pins.gpio.pins(18))
-    IOBUF(apb_uart_txd_in,  dut.io.pins.gpio.pins(23))
-    //val iobuf_apb_uart_txd = Module(new IOBUF())
-    //iobuf_apb_uart_txd.io.I := dut.io.pins.gpio.pins(18).o.oval
-    //iobuf_apb_uart_txd.io.T := ~dut.io.pins.gpio.pins(18).o.oe
-    //attach(iobuf_apb_uart_txd.io.IO, apb_uart_txd_in)
 
     // Shield header row 0: PD2-PD7
     //IOBUF(ck_io(2),  dut.io.pins.gpio.pins(18))
