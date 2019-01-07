@@ -144,7 +144,9 @@ class E300ArtyDevKitPlatform(implicit val p: Parameters) extends Module {
   //APB_UART
   BasePinToIOF(apbUart_pins(0).rxd, iof_0(18))
   BasePinToIOF(apbUart_pins(0).txd, iof_0(23))
-
+  //io.pins.apb_uart.rxd := apbUart_pins(0).rxd
+  //io.pins.apb_uart.txd := apbUart_pins(0).txd
+   //io.pins.apb_uart <> apbUart_pins(0)
   //PWM
   BasePinToIOF(pwm_pins(0).pwm(0), iof_1(0) )
   BasePinToIOF(pwm_pins(0).pwm(1), iof_1(1) )

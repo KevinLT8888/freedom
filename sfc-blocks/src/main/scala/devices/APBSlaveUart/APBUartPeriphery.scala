@@ -18,7 +18,7 @@ case object PeripheryAPBSlaveUartKey extends Field[Seq[APBSlaveUartParams]]
 trait HasPeripheryAPBSlaveUart { this: BaseSubsystem =>
   val apbUartNodes = p(PeripheryAPBSlaveUartKey).map { params =>
     val apbUart = LazyModule(new APBUART(params))
-    sbus.control_bus.toFixedWidthSingleBeatSlave(2, Some("sfcApbUart")){apbUart.cfg_tl_node}
+    sbus.control_bus.toFixedWidthSingleBeatSlave(4, Some("sfcApbUart")){apbUart.cfg_tl_node}
     apbUart.ioNode.makeSink
   }
 }

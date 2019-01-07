@@ -114,8 +114,8 @@ class E300ArtyDevKitFPGAChip(implicit override val p: Parameters) extends ArtySh
 
     IOBUF(apb_uart_rxd_out, dut.io.pins.gpio.pins(23))
     IOBUF(apb_uart_txd_in,  dut.io.pins.gpio.pins(18))
-
-
+      //IOBUF(apb_uart_rxd_out, dut.io.pins.apb_uart.txd)
+      //IOBUF(apb_uart_txd_in, dut.io.pins.apb_uart.rxd)
     // Shield header row 0: PD2-PD7
     //IOBUF(ck_io(2),  dut.io.pins.gpio.pins(18))
     IOBUF(ck_io(3),  dut.io.pins.gpio.pins(19)) // PWM1(1)

@@ -29,7 +29,7 @@ class APBUART(params:APBSlaveUartParams)(implicit p: Parameters) extends LazyMod
           executable    = false,
           supportsWrite = true,
           supportsRead  = true)),
-        beatBytes = 2)))
+        beatBytes = 4)))
 
   val cfg_tl_node = cfg_apb_node := LazyModule(new TLToAPB).node
 
@@ -67,6 +67,9 @@ class APBUART(params:APBSlaveUartParams)(implicit p: Parameters) extends LazyMod
 
     u_apb_slave_uart.io.UARTRXD := port.rxd
     port.txd := u_apb_slave_uart.io.UARTTXD
+
+    cfg.pready  := Bool(true)
+    cfg.pslverr := Bool(false)
 
   }
 

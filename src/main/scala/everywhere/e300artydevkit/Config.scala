@@ -52,7 +52,7 @@ class E300DevKitPeripherals extends Config((site, here, up) => {
   case PeripheryMaskROMKey => List(
     MaskROMParams(address = 0x10000, name = "BootROM"))
   case PeripheryAPBSlaveUartKey => List(
-    APBSlaveUartParams(config = "APBUart", raddress = 0x100e3000L,lenth = 0x1000L-1L)
+    APBSlaveUartParams(config = "APBUart", raddress = 0x100e0000L,lenth = 0x10000L-1L)
   )
 })
 
