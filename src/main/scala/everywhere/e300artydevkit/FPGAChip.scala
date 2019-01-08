@@ -108,21 +108,15 @@ class E300ArtyDevKitFPGAChip(implicit override val p: Parameters) extends ArtySh
 
 
     //link an APB uart device ouside
-
-    //IOBUF(apb_uart_rxd_out, dut.sys_apb_uart(0).txd)
-    //dut.sys_apb_uart(0).rxd := IOBUF(apb_uart_txd_in)
-
-    IOBUF(apb_uart_rxd_out, dut.io.pins.gpio.pins(23))
-    IOBUF(apb_uart_txd_in,  dut.io.pins.gpio.pins(18))
-      //IOBUF(apb_uart_rxd_out, dut.io.pins.apb_uart.txd)
-      //IOBUF(apb_uart_txd_in, dut.io.pins.apb_uart.rxd)
+    IOBUF(apb_uart_rxd_out, dut.io.pins.apb_uart.txd)
+    IOBUF(apb_uart_txd_in, dut.io.pins.apb_uart.rxd)
     // Shield header row 0: PD2-PD7
-    //IOBUF(ck_io(2),  dut.io.pins.gpio.pins(18))
+    IOBUF(ck_io(2),  dut.io.pins.gpio.pins(18))
     IOBUF(ck_io(3),  dut.io.pins.gpio.pins(19)) // PWM1(1)
     IOBUF(ck_io(4),  dut.io.pins.gpio.pins(20)) // PWM1(0)
     IOBUF(ck_io(5),  dut.io.pins.gpio.pins(21)) // PWM1(2)
     IOBUF(ck_io(6),  dut.io.pins.gpio.pins(22)) // PWM1(3)
-    //IOBUF(ck_io(7),  dut.io.pins.gpio.pins(23))
+    IOBUF(ck_io(7),  dut.io.pins.gpio.pins(23))
 
     // Header row 1: PB0-PB5
     IOBUF(ck_io(8),  dut.io.pins.gpio.pins(0))  // PWM0(0)

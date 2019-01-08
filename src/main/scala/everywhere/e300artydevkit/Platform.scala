@@ -42,7 +42,7 @@ class E300ArtyDevKitPlatformIO(implicit val p: Parameters) extends Bundle {
     val jtag = new JTAGPins(() => PinGen(), false)
     val gpio = new GPIOPins(() => PinGen(), p(PeripheryGPIOKey)(0))
     val qspi = new SPIPins(() => PinGen(), p(PeripherySPIFlashKey)(0))
-    //val apb_uart = new UARTPins(()=>PinGen())
+    val apb_uart = new UARTPins(()=>PinGen())
     val aon = new MockAONWrapperPins()
   }
   val jtag_reset = Bool(INPUT)
@@ -142,11 +142,7 @@ class E300ArtyDevKitPlatform(implicit val p: Parameters) extends Module {
   BasePinToIOF(uart_pins(1).txd, iof_0(25))
 
   //APB_UART
-  BasePinToIOF(apbUart_pins(0).rxd, iof_0(18))
-  BasePinToIOF(apbUart_pins(0).txd, iof_0(23))
-  //io.pins.apb_uart.rxd := apbUart_pins(0).rxd
-  //io.pins.apb_uart.txd := apbUart_pins(0).txd
-   //io.pins.apb_uart <> apbUart_pins(0)
+  io.pins.apb_uart <> apbUart_pins(0)
   //PWM
   BasePinToIOF(pwm_pins(0).pwm(0), iof_1(0) )
   BasePinToIOF(pwm_pins(0).pwm(1), iof_1(1) )
