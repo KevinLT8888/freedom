@@ -21,7 +21,8 @@ class DefaultFreedomEConfig extends Config (
   new WithNBreakpoints(2)        ++
   new WithNExtTopInterrupts(0)   ++
   new WithJtagDTM                ++
-  new TinyConfig
+  new WithTestMemConfig
+  //new TinyConfig
   ++ new WithTimer
   ++ new WithAHBSlaveRam("AHBSlaveRam")
 )
@@ -67,4 +68,18 @@ class E300ArtyDevKitConfig extends Config(
       idcodeManufId = 0x489,
       debugIdleCycles = 5)
   })
+)
+
+class WithTestMemConfig extends Config(
+  new WithNMemoryChannels(1)
+  ++ new WithNSmallCores(1).alter((site,here,up)=>{case XLen => 32})
+  ++ new BaseConfig().alter(
+    (site,here,up) =>  {
+      case ExtMem => Some(MemoryPortParams(MasterPortParams(//change the address of the memory
+        base = 0x80000000L,
+        size = 0x20000L,
+        beatBytes = site(MemoryBusKey).beatBytes,
+        idBits = 4),1))
+    }
+  )
 )

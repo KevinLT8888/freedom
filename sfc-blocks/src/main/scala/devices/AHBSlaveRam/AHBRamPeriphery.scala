@@ -14,10 +14,10 @@ import sfc.blocks.ip.timer._
 case object AHBSlaveRamKey extends Field[Option[AHBSlaveRamParams]](None)
 
 trait HasPeripheryAHBSlaveRam { this: BaseSubsystem =>
-  p(AHBSlaveRamKey).map { params =>
-    val AHBSlaveRam = LazyModule(new AHBSlaveRam(params))
+  p(ExtMem).map {  params =>
+    val AHBSlaveRam = LazyModule(new AHBSlaveRam(params,cacheBlockBytes))
 
-    sbus.control_bus.toFixedWidthSingleBeatSlave(4, Some("AHBSlaveRam")) { AHBSlaveRam.cfg_tl_node }
-    
+    //sbus.control_bus.toFixedWidthSingleBeatSlave(4, Some("AHBSlaveRam")) { AHBSlaveRam.cfg_tl_node }
+    mbus.toDRAMController(Some("AHB"))(AHBSlaveRam.cfg_tl_node)
   }
 }

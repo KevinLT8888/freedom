@@ -13,27 +13,28 @@ case class AHBSlaveRamParams(
   raddress: BigInt,
   lenth: BigInt
 )
-
-class AHBSlaveRam(params: AHBSlaveRamParams )(implicit p: Parameters) extends LazyModule {
-  //this is a Wrapper for timer and handle all the nodes
-  val blackboxName =  params.config
-
-  val dtsdevice = new SimpleDevice("AHBSlaveRam",Seq("AHBSlaveRam_2"))
-
+class AHBSlaveRam( param : MemoryPortParams , cacheBlockBytes: Int )(implicit p: Parameters) extends LazyModule
+//   with HasAHBMemNode
+{
+  //this is a Wrapper for an AHBRam and handle all the nodes
+  val blackboxName = "AHBRam"
+  val cacheBlockBs = cacheBlockBytes
+  val memPortParam = param
+  ////val dtsdevice = new SimpleDevice("AHBSlaveRam",Seq("AHBSlaveRam_2"))
+  val memdevice = new MemoryDevice
   val cfg_ahb_node = AHBSlaveNode(  //instantiate a node of AHBSlave
-    Seq(
-      AHBSlavePortParameters(
-        slaves = Seq(AHBSlaveParameters(
-          address       = Seq(AddressSet(params.raddress, params.lenth)),
-          resources     = dtsdevice.reg("control"),
-          executable    = true,
-          supportsWrite = TransferSizes(1,4),
-          supportsRead  = TransferSizes(1,4))),
-        beatBytes = 4)))
+   Seq(
+     AHBSlavePortParameters(
+       slaves = Seq(AHBSlaveParameters(
+         address       = Seq(AddressSet(param.master.base, param.master.size - 1L)),
+         resources     = memdevice.reg("mem"),
+         regionType    = RegionType.UNCACHED,
+         executable    = true,
+         supportsWrite = TransferSizes(1,cacheBlockBytes),
+         supportsRead  = TransferSizes(1,cacheBlockBytes))),
+       beatBytes = 4)))
 
-  val cfg_tl_node = cfg_ahb_node := LazyModule(new TLToAHB).node
-
-
+ val cfg_tl_node = cfg_ahb_node := LazyModule(new TLToAHB).node
 
   lazy val module = new LazyModuleImp(this){
 
@@ -52,7 +53,6 @@ class AHBSlaveRam(params: AHBSlaveRamParams )(implicit p: Parameters) extends La
     u_ram_model.io.addra  := u_ahb_ram.io.ram_addr
     u_ram_model.io.dina   := u_ahb_ram.io.ram_din
 
-
     val (ahb, _) = cfg_ahb_node.in(0)
     u_ahb_ram.io.haddr    := ahb.haddr
     u_ahb_ram.io.htrans   := ahb.htrans
@@ -66,6 +66,23 @@ class AHBSlaveRam(params: AHBSlaveRamParams )(implicit p: Parameters) extends La
     ahb.hreadyout         := u_ahb_ram.io.hreadyout
     ahb.hresp             := u_ahb_ram.io.hresp
 
-
   }
 }
+
+//trait HasAHBMemNode { this : AHBSlaveRam =>
+// //this trait can not pass the compiler, javaNullPointerExeptions
+//val memdevice = new MemoryDevice
+//val cfg_ahb_node  = AHBSlaveNode(
+//    Seq(
+//      AHBSlavePortParameters(
+//        slaves = Seq(AHBSlaveParameters(
+//          address = Seq(AddressSet(memPortParam.master.base, memPortParam.master.size - 1L)),
+//          resources = memdevice.reg("mem"),
+//          regionType = RegionType.UNCACHED,
+//          executable = true,
+//          supportsWrite = TransferSizes(1, cacheBlockBs),
+//          supportsRead = TransferSizes(1, cacheBlockBs))),
+//        beatBytes = 4)))
+//  //val cfg_tl_node = cfg_ahb_node := LazyModule(new TLToAHB).node
+
+//}
