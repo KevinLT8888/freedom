@@ -19,11 +19,13 @@ import sifive.blocks.devices.i2c._
 import sfc.blocks.timer._
 import sfc.blocks.AHBRam._
 import sfc.blocks.APBSlaveUart._
+import sfc.blocks.AHBMaster._
 //-------------------------------------------------------------------------
 // E300ArtyDevKitSystem
 //-------------------------------------------------------------------------
 
 class E300ArtyDevKitSystem(implicit p: Parameters) extends RocketSubsystem
+    with HasAHBMaster
     with HasPeripheryTIMER
     with HasPeripheryAHBSlaveRam
     with HasPeripheryMaskROMSlave
