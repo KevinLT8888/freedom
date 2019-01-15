@@ -13,38 +13,24 @@ trait HasAHBMaster {this: BaseSubsystem =>
   fbus.fromMaster(name = Some("AHB_Master_Model"),buffer = BufferParams.default){
     TLBuffer.chainNode(0)
   } := masterAhb.master_tl_node
-
-
 }
-
-
 class AHBMaster()(implicit p: Parameters) extends LazyModule
 {
-
   val masterDevice = new SimpleDevice("AHBMaster",Seq("AHBMaster"))
-
   val master_tl_node = TLIdentityNode()
-
   val master_ahb_node = AHBMasterNode(Seq(
       AHBMasterPortParameters(
         masters = Seq(AHBMasterParameters(
           name = "AHBMaster")))))
-
   (master_tl_node
-    //:= TLBuffer()
-    //:= TLWidthWidget(4)
+    := TLBuffer()
+    := TLWidthWidget(4)
     := AHBToTL()
     := master_ahb_node)
-
   lazy val module = new LazyModuleImp(this){
-
     val u_ahb_master = Module(new ahb_master_model)
-
     u_ahb_master.io.HCLK  :=  clock
     u_ahb_master.io.HRESETn  :=  ~reset
-
-
-
     val (ahb, _) = master_ahb_node.out(0)
     //input to master
     u_ahb_master.io.HREADY    :=  ahb.hreadyout
@@ -54,14 +40,14 @@ class AHBMaster()(implicit p: Parameters) extends LazyModule
 
     ahb.hready    := Bool(true)
     //output from master
-
     ahb.htrans   :=    u_ahb_master.io.HTRANS
     ahb.hburst   :=    u_ahb_master.io.HBURST
     ahb.hprot    :=    u_ahb_master.io.HPROT
     ahb.hsize    :=    u_ahb_master.io.HSIZE
     ahb.hwrite   :=    u_ahb_master.io.HWRITE
     ahb.hwdata   :=    u_ahb_master.io.HWDATA
-
+    ahb.hmastlock :=   u_ahb_master.io.HMASTLOCK
+    ahb.haddr    :=    u_ahb_master.io.HADDR
   }
 
 }

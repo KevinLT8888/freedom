@@ -4,7 +4,7 @@ import Chisel._
 
 class ahb_master_model  extends BlackBox{
   override def desiredName = "cmsdk_ahb_fileread_master32"
-  val io = new Bundle(){
+  val io = new Bundle {
   
   val    HCLK      =    Clock(INPUT)    
   val    HRESETn   =    Bool(INPUT)
