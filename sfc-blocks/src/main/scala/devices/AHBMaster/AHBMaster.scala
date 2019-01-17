@@ -38,7 +38,8 @@ class AHBMaster()(implicit p: Parameters) extends LazyModule
     u_ahb_master.io.HRDATA    :=  ahb.hrdata
     u_ahb_master.io.EXRESP    :=  Bool(false)
 
-    ahb.hready    := Bool(true)
+    ahb.hsel     :=    Bool(true)
+    ahb.hready   :=    Bool(true)
     //output from master
     ahb.htrans   :=    u_ahb_master.io.HTRANS
     ahb.hburst   :=    u_ahb_master.io.HBURST
