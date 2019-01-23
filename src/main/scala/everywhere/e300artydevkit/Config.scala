@@ -82,4 +82,5 @@ class WithTestMemConfig extends Config(
         idBits = 4),1))
     }
   )
+  ++ new WithoutTLMonitors
 )
