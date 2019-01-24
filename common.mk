@@ -55,10 +55,15 @@ firrtl: $(firrtl)
 verilog := $(BUILD_DIR)/$(CONFIG_PROJECT).$(CONFIG).v
 topname := $(CONFIG_PROJECT).$(CONFIG)
 $(verilog): $(firrtl) $(FIRRTL_JAR)
-	#$(FIRRTL) -i $(firrtl) -o $@ -X verilog
-	mkdir -p $(BUILD_DIR)/generated_vsrc
+	#$(FIRRTL) -i $(firrtl) -o $@ -X verilog	#original generate a huge single .v file
+	mkdir -p $(BUILD_DIR)/generated_vsrc/Design
 	$(FIRRTL) -i $(firrtl) -tn $(topname) -X verilog -fsm
-	mv *.v $(BUILD_DIR)/generated_vsrc
+	touch $(CONFIG_PROJECT).$(CONFIG).F
+	ls *.v >  $(CONFIG_PROJECT).$(CONFIG).F
+	sed -i 's/^/\.\/Design\//g' $(CONFIG_PROJECT).$(CONFIG).F
+	mv *.v $(BUILD_DIR)/generated_vsrc/Design
+	mv $(CONFIG_PROJECT).$(CONFIG).flist $(BUILD_DIR)/generated_vsrc
+	cd $(BUILD_DIR); tar -zcf $(CONFIG_PROJECT).tar.gz generated_vsrc/
 ifneq ($(PATCHVERILOG),"")
 	$(PATCHVERILOG)
 endif
