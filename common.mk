@@ -53,8 +53,12 @@ firrtl: $(firrtl)
 
 # Build .v
 verilog := $(BUILD_DIR)/$(CONFIG_PROJECT).$(CONFIG).v
+topname := $(CONFIG_PROJECT).$(CONFIG)
 $(verilog): $(firrtl) $(FIRRTL_JAR)
-	$(FIRRTL) -i $(firrtl) -o $@ -X verilog
+	#$(FIRRTL) -i $(firrtl) -o $@ -X verilog
+	mkdir -p $(BUILD_DIR)/generated_vsrc
+	$(FIRRTL) -i $(firrtl) -tn $(topname) -X verilog -fsm
+	mv *.v $(BUILD_DIR)/generated_vsrc
 ifneq ($(PATCHVERILOG),"")
 	$(PATCHVERILOG)
 endif
