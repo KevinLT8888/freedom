@@ -62,7 +62,7 @@ $(verilog): $(firrtl) $(FIRRTL_JAR)
 	ls *.v >  $(CONFIG_PROJECT).$(CONFIG).F
 	sed -i 's/^/\.\/Design\//g' $(CONFIG_PROJECT).$(CONFIG).F
 	mv *.v $(BUILD_DIR)/generated_vsrc/Design
-	mv $(CONFIG_PROJECT).$(CONFIG).flist $(BUILD_DIR)/generated_vsrc
+	mv $(CONFIG_PROJECT).$(CONFIG).F $(BUILD_DIR)/generated_vsrc
 	cd $(BUILD_DIR); tar -zcf $(CONFIG_PROJECT).tar.gz generated_vsrc/
 ifneq ($(PATCHVERILOG),"")
 	$(PATCHVERILOG)
