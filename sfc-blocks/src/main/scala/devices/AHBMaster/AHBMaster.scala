@@ -10,8 +10,8 @@ trait HasAHBMaster {this: BaseSubsystem =>
 
   val masterAhb = LazyModule(new AHBMaster())
 
-  fbus.fromMaster(name = Some("AHB_Master_Model"),buffer = BufferParams.default){
-    TLBuffer.chainNode(0)
+  fbus.fromMaster(name = Some("AHB_Master_Model"),buffer = BufferParams.flow){
+    TLBuffer.chainNode(2)
   } := masterAhb.master_tl_node
 }
 class AHBMaster()(implicit p: Parameters) extends LazyModule
@@ -23,7 +23,7 @@ class AHBMaster()(implicit p: Parameters) extends LazyModule
         masters = Seq(AHBMasterParameters(
           name = "AHBMaster")))))
   (master_tl_node
-    := TLBuffer()
+    := TLBuffer(abcde = BufferParams.flow)
     := TLWidthWidget(4)
     := AHBToTL()
     := master_ahb_node)

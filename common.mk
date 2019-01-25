@@ -60,7 +60,7 @@ $(verilog): $(firrtl) $(FIRRTL_JAR)
 	$(FIRRTL) -i $(firrtl) -tn $(topname) -X verilog -fsm
 	touch $(CONFIG_PROJECT).$(CONFIG).F
 	ls *.v >  $(CONFIG_PROJECT).$(CONFIG).F
-	sed -i 's/^/\.\/Design\//g' $(CONFIG_PROJECT).$(CONFIG).F
+	sed -i 's/^/generated_vsrc\/Design\//g' $(CONFIG_PROJECT).$(CONFIG).F
 	mv *.v $(BUILD_DIR)/generated_vsrc/Design
 	mv $(CONFIG_PROJECT).$(CONFIG).F $(BUILD_DIR)/generated_vsrc
 	cd $(BUILD_DIR); tar -zcf $(CONFIG_PROJECT).tar.gz generated_vsrc/
