@@ -8,20 +8,20 @@ import freechips.rocketchip.subsystem._
 import sfc.blocks.ip.ahbmaster._
 trait HasAHBMaster {this: BaseSubsystem =>
 
-  val masterAhb = LazyModule(new AHBMaster())
+  val masterAhb = LazyModule(new AHBLiteMaster())
 
-  fbus.fromMaster(name = Some("AHB_Master_Model"),buffer = BufferParams.flow){
-    TLBuffer.chainNode(2)
+  fbus.fromMaster(name = Some("AHB_Lite_Master_Model"),buffer = BufferParams.none){
+    TLBuffer.chainNode(0)
   } := masterAhb.master_tl_node
 }
-class AHBMaster()(implicit p: Parameters) extends LazyModule
+class AHBLiteMaster()(implicit p: Parameters) extends LazyModule
 {
-  val masterDevice = new SimpleDevice("AHBMaster",Seq("AHBMaster"))
+  val masterDevice = new SimpleDevice("AHBLiteMaster",Seq("AHBLiteMaster"))
   val master_tl_node = TLIdentityNode()
   val master_ahb_node = AHBMasterNode(Seq(
       AHBMasterPortParameters(
         masters = Seq(AHBMasterParameters(
-          name = "AHBMaster")))))
+          name = "AHBLiteMaster")))))
   (master_tl_node
     := TLBuffer(abcde = BufferParams.flow)
     := TLWidthWidget(4)
