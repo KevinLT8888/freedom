@@ -3,3 +3,6 @@
 # sbt directories
 /target
 /project/target
+
+.idea/
+project/
